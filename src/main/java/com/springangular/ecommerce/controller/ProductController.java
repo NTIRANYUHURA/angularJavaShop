@@ -6,6 +6,8 @@ import com.springangular.ecommerce.model.Product;
 
 import com.springangular.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -64,28 +66,36 @@ public class ProductController {
     }
 
 
-
-
     @GetMapping({"/getAllProducts"})
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
-
+    public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber){
+        return productService.getAllProducts(pageNumber);
 
     }
 
 
 
     @GetMapping("/getProductDetailsById/{productId}")
-    public Product getProductDetails(@PathVariable("productId")Integer productId){
+    public Product getProductDetailsById(@PathVariable("productId")Integer productId){
        return productService.getProductDetailsById(productId);
 
     }
+
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping({"/deleteDetails/{productId}"})
     public void deleteProductDetails(@PathVariable("productId") Integer productId ){
         productService.deleteProductDetails(productId);
     }
 
+    @PreAuthorize("hasRole('User')")
+    @GetMapping({"/getProductDetails/{isSingleProductCheckout}/{productId}"})
+    public void getProductDetails(@PathVariable(name = "isSingleProductCheckout" ) boolean isSingleProductCheckout,
+                                  @PathVariable(name = "productId") Integer productId){
+        productService.getProductDetails(isSingleProductCheckout, productId);
 
 
-}
+
+    }
+
+
+
+    }
