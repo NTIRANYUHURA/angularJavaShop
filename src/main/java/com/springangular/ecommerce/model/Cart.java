@@ -3,9 +3,10 @@ package com.springangular.ecommerce.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+
+
 @Getter
 @Entity
-@Table
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,8 +19,7 @@ public class Cart {
     private User user;
 
 
-    public Cart(){
-
+    public Cart() {
     }
 
     public Cart(Product product, User user) {

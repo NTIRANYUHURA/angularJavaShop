@@ -6,8 +6,6 @@ import com.springangular.ecommerce.model.Product;
 
 import com.springangular.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,13 +39,13 @@ public class ProductController {
         } catch (Exception e){
 
             System.out.println(e.getMessage());
-
-
         }
 
 
         return product;
     }
+
+
     public Set<ImageModel>  uploadImage(MultipartFile[] multipartFiles) throws IOException {
     Set<ImageModel> imageModels = new HashSet<>();
 
@@ -67,8 +65,12 @@ public class ProductController {
 
 
     @GetMapping({"/getAllProducts"})
-    public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber){
-        return productService.getAllProducts(pageNumber);
+    public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue="") String searchKey){
+        List<Product> result =  productService.getAllProducts(pageNumber, searchKey);
+
+        System.out.println("Result size is " + result.size());
+        return result;
 
     }
 
@@ -88,13 +90,14 @@ public class ProductController {
 
     @PreAuthorize("hasRole('User')")
     @GetMapping({"/getProductDetails/{isSingleProductCheckout}/{productId}"})
-    public void getProductDetails(@PathVariable(name = "isSingleProductCheckout" ) boolean isSingleProductCheckout,
+    public List<Product> getProductDetails(@PathVariable(name = "isSingleProductCheckout" ) boolean isSingleProductCheckout,
                                   @PathVariable(name = "productId") Integer productId){
-        productService.getProductDetails(isSingleProductCheckout, productId);
+        return productService.getProductDetails(isSingleProductCheckout, productId);
 
 
 
     }
+
 
 
 
