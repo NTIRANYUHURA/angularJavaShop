@@ -24,7 +24,7 @@ public class CartController {
     }
 
     @PreAuthorize("hasRole('User')")
-    @DeleteMapping({"/addToCart/{productId}"})
+    @DeleteMapping({"/deleteCartItem/{cartId}"})
     public void deleteCartItem(@PathVariable(name = "cartId") Integer cartId ){
         cartService.deleteCartItem(cartId);
     }

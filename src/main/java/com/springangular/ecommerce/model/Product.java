@@ -1,19 +1,22 @@
 package com.springangular.ecommerce.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.List;
+
+import java.util.Optional;
 import java.util.Set;
 
-@Getter
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
+
 @Entity
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
-
-    private Integer productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    private int productId;
 
     private String productName;
 
@@ -26,10 +29,7 @@ public class Product {
 
 
 
-
-
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL  )
     @JoinTable(name = "product_images",
     joinColumns = {
         @JoinColumn(name = "product_id")},
@@ -41,41 +41,69 @@ public class Product {
 
 
 
-
-
     public Product(){
 
     }
 
-    public Product(String productName, String productDescription, Double productDiscountedPrice, Double productActualPrice, Set<ImageModel> productImages) {
+
+    public Product(int productId, String productName, String productDescription, Double productDiscountedPrice, Double productActualPrice, Set<ImageModel> productImages) {
+        this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productDiscountedPrice = productDiscountedPrice;
         this.productActualPrice = productActualPrice;
         this.productImages = productImages;
+
     }
 
-    public void setProductId(Integer productId) {
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
     }
 
     public void setProductName(String productName) {
         this.productName = productName;
     }
 
+    public String getProductDescription() {
+        return productDescription;
+    }
+
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public Double getProductDiscountedPrice() {
+        return productDiscountedPrice;
     }
 
     public void setProductDiscountedPrice(Double productDiscountedPrice) {
         this.productDiscountedPrice = productDiscountedPrice;
     }
 
+    public Double getProductActualPrice() {
+        return productActualPrice;
+    }
+
     public void setProductActualPrice(Double productActualPrice) {
         this.productActualPrice = productActualPrice;
+    }
+
+    public Set<ImageModel> getProductImages() {
+        return productImages;
     }
 
     public void setProductImages(Set<ImageModel> productImages) {
         this.productImages = productImages;
     }
+
+
 }
+

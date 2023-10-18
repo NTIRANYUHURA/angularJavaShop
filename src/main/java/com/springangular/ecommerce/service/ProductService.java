@@ -13,17 +13,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductService {
+public class
+ProductService {
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private UserRipository userRipository;
+
+    //@Autowired
+    //private CategoryRepository categoryRepository;
 
     @Autowired
     private CartRepository cartRepository;
@@ -32,52 +38,56 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> getAllProducts(int pageNumber, String searchKey){
-        Pageable pageable = PageRequest.of(pageNumber,12);
-        if(searchKey.equals("")){
+    public List<Product> getAllProducts(int pageNumber, String searchKey) {
+        Pageable pageable = PageRequest.of(pageNumber, 12);
+        if (searchKey.isEmpty()) {
 
             return (List<Product>) productRepository.findAll(pageable);
         } else {
 
-            return  (List<Product>) productRepository.findByProductNameContainingIgnoreCaseOrProductDescriptionContainingIgnoreCase(
-                    searchKey, searchKey, pageable);
+            return (List<Product>) productRepository.findByProductNameContainingIgnoreCaseOrProductDescriptionContainingIgnoreCase(searchKey, searchKey, pageable);
 
         }
 
 
-
     }
 
-    public Product getProductDetailsById(Integer productId){
-         return productRepository.findById(productId).get();
+    public Product getProductDetailsById(Integer productId) {
+        Optional<Product> optionalProduct = this.productRepository.findById(productId);
+        return optionalProduct.orElse(null);
     }
 
-   public void deleteProductDetails(Integer productId){
+    public void deleteProductDetails(Integer productId) {
         productRepository.deleteById(productId);
-   }
+    }
 
-   public List<Product> getProductDetails(boolean isSingleProductCheckout, Integer productId ) {
-       if (isSingleProductCheckout  && productId != 0) {
+    public List<Product> getProductDetails(boolean isSingleProductCheckout, Integer productId) {
+        if (isSingleProductCheckout && productId != 0) {
 
-           // we are going to buy a single product
+            // we are going to buy a single product
 
-           List<Product> list = new ArrayList<>();
-           Product product = productRepository.findById(productId).get();
-           list.add(product);
-           return list;
-       } else {
+            List<Product> list = new ArrayList<>();
+            Product product = productRepository.findById(productId).get();
+            list.add(product);
+            return list;
+        } else {
 
-           String username = JwtRequestFilter.CURRENT_USER;
-           User user = userRipository.findById(username).get();
-           List<Cart> carts = cartRepository.findByUser(user);
+            String username = JwtRequestFilter.CURRENT_USER;
+            User user = userRipository.findById(username).get();
+            List<Cart> carts = cartRepository.findByUser(user);
 
-           return carts.stream().map(Cart::getProduct).collect(Collectors.toList());
-
-
-       }
+            return carts.stream().map(Cart::getProduct).collect(Collectors.toList());
 
 
+        }
 
-   }
+    }
 
+
+    //public Set<Product> getProductsOfCategory(Category category){
+        //return this.productRepository.findByCategory(category);
+    //}
+    public Product postProduct(long categoryId, Product product) {
+        return this.productRepository.save(product);
+    }
 }

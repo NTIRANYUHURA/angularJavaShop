@@ -13,7 +13,7 @@ public class ImageModel {
     private String Type;
 
 
-    @Column( length = 4048576 )
+    @Column( length = 50000000 )
     @Lob
     private byte[] picByte;
 
