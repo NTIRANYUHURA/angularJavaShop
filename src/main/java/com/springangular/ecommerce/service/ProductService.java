@@ -28,6 +28,8 @@ public class ProductService {
     @Autowired
     private CartRepository cartRepository;
 
+
+
     public void addNewProduct(Product product) {
         productRepository.save(product);
     }

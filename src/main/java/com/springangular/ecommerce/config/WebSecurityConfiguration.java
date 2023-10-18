@@ -43,7 +43,7 @@ public class WebSecurityConfiguration {
                .disable()
                .authorizeHttpRequests((request)-> {
                    try {
-                       request.requestMatchers("/authenticate", "/getAllProducts", "/addNewProduct", "/deleteDetails/{productId}","/getProductDetailsById/{productId}", "/registerNewUser","/addToCart/{productId}", "/getCartDetails").permitAll()
+                       request.requestMatchers("/authenticate", "/getAllProducts", "/deleteProductDetails/{productId}","/getProductDetailsById/{productId}", "/registerNewUser","/addToCart/{productId}", "/getCartDetails").permitAll()
                                .requestMatchers(HttpHeaders.ALLOW).permitAll()
                                .anyRequest()
                                .authenticated()

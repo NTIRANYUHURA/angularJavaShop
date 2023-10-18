@@ -26,10 +26,7 @@ public class Product {
 
 
 
-
-
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL  )
     @JoinTable(name = "product_images",
     joinColumns = {
         @JoinColumn(name = "product_id")},
@@ -40,12 +37,11 @@ public class Product {
     private Set<ImageModel> productImages;
 
 
-
-
-
     public Product(){
 
     }
+
+
 
     public Product(String productName, String productDescription, Double productDiscountedPrice, Double productActualPrice, Set<ImageModel> productImages) {
         this.productName = productName;
@@ -74,6 +70,9 @@ public class Product {
     public void setProductActualPrice(Double productActualPrice) {
         this.productActualPrice = productActualPrice;
     }
+
+
+
 
     public void setProductImages(Set<ImageModel> productImages) {
         this.productImages = productImages;
