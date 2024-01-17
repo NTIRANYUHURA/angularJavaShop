@@ -1,8 +1,8 @@
 package com.springangular.ecommerce.controller;
 
-
 import com.springangular.ecommerce.model.OrderDetail;
 import com.springangular.ecommerce.model.OrderInput;
+import com.springangular.ecommerce.model.TransactionDetails;
 import com.springangular.ecommerce.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +45,12 @@ public class OrderDetailController {
     public void markOrderAsDelivered(@PathVariable(name = "orderId") Integer orderId){
         orderDetailService.markOrderAsDelivered(orderId);
 
+    }
+
+    @PreAuthorize("hasRole('User')")
+    @GetMapping({"/createTransaction/{amount}"})
+    public TransactionDetails createTransaction(@PathVariable(name = "amount") Double amount) {
+        return orderDetailService.createTransaction(amount);
     }
 
 

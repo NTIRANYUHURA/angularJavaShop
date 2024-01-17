@@ -1,25 +1,28 @@
 package com.springangular.ecommerce.service;
 
+import com.springangular.ecommerce.exception.InvalidEntityException;
 import com.springangular.ecommerce.model.Role;
 import com.springangular.ecommerce.model.User;
-import com.springangular.ecommerce.repository.RoleRipository;
-import com.springangular.ecommerce.repository.UserRipository;
+import com.springangular.ecommerce.repository.RoleRepository;
+import com.springangular.ecommerce.repository.UserRepository;
+import com.springangular.ecommerce.validators.ProductValidator;
+import com.springangular.ecommerce.validators.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserRipository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private RoleRipository roleRepository;
+    private RoleRepository roleRepository;
 
 
     @Autowired
@@ -37,6 +40,7 @@ public class UserService {
         userRole.setRoleDescription("Default role for newly created record");
         roleRepository.save(userRole);
 
+
         User adminUser = new User();
         adminUser.setUserName("admin123");
         adminUser.setUserPassword(getEncodedPassword("admin@123"));
@@ -48,17 +52,28 @@ public class UserService {
         userRepository.save(adminUser);
 
         User user = new User();
-         user.setUserName("ntir");
+        user.setUserName("ntir");
         user.setUserPassword(getEncodedPassword("ntir@123"));
         user.setUserFirstName("flo");
-         user.setUserLastName("fofo");
+        user.setUserLastName("fofo");
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
         user.setRole(userRoles);
         userRepository.save(user);
+
+
+
     }
 
     public User registerNewUser(User user){
+
+        List<String> errors = UserValidator.validate(user);
+        if(!errors.isEmpty()){
+            throw new InvalidEntityException("verifier les champs username and password");
+
+        }
+
+
         Role role = roleRepository.findById("user").get();
 
         Set<Role> roleSet = new HashSet<>();
@@ -75,21 +90,6 @@ public class UserService {
         return passwordEncoder.encode(password);
     }
 
-
-
-    //   public User registerNewUser(User user) {
-   //     Role role = roleRepository.findById("User").get();
-      //  Set<Role> userRoles = new HashSet<>();
-       // userRoles.add(role);
-       // user.setRole(userRoles);
-       // user.setUserPassword(getEncodedPassword(user.getUserPassword()));
-
-       // return userRepository.save(user);
-   // }
-
-    //public String getEncodedPassword(String password) {
-       // return passwordEncoder.encode(password);
-    //}
 
 
 }

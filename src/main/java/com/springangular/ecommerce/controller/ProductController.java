@@ -1,18 +1,13 @@
 package com.springangular.ecommerce.controller;
 
 import com.springangular.ecommerce.model.ImageModel;
-
 import com.springangular.ecommerce.model.Product;
-
 import com.springangular.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -25,23 +20,16 @@ public class ProductController {
     private ProductService productService;
 
 
-
     @PreAuthorize("hasRole('Admin')")
     @PostMapping(value = {"/addNewProduct"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Product addNewProduct(@RequestPart("product") Product product,
-
                                  @RequestPart("imageFile") MultipartFile[] file) {
-
-
         // return productService.addNewProduct(product);
 
         try {
 
             Set<ImageModel> images = uploadImage(file);
             product.setProductImages(images);
-
-
-
             productService.addNewProduct(product);
         } catch (Exception e) {
 
@@ -103,31 +91,6 @@ public class ProductController {
 
     }
 
-    //get all products of any catId
-
-    /*@GetMapping("/category/{categoryId}")
-    public ResponseEntity<?> getProductOfCategory(@PathVariable(name = "categoryId") Integer categoryId
-    ){
-
-      Category category = new Category();
-      category.setCategoryId(categoryId);
-      Set<Product> productsOfCategory = this.productService.getProductsOfCategory(category);
-      return ResponseEntity.ok(productsOfCategory);
-
-    } */
-
-    //@GetMapping("/category/{productId}")
-    //public ResponseEntity<?> getProductsOfCategory(@PathVariable("productId") Integer productId ){
-       // Category category = new Category();
-        //Set<Product> productsOfCategory = this.productService.getProductsOfCategory(category);
-        //return ResponseEntity.ok(productsOfCategory);
-    //}
-
-    @PostMapping("/product/{categoryId}")
-    public ResponseEntity<Product> postProduct(@PathVariable long categoryId, @ModelAttribute Product product ) throws IOException {
-        Product prod = productService.postProduct(categoryId, product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(prod);
-    }
 
 
 }

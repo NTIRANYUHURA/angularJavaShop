@@ -1,9 +1,9 @@
 package com.springangular.ecommerce.model;
 
+import com.springangular.ecommerce.model.Product;
+import com.springangular.ecommerce.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
-
-
 
 @Getter
 @Entity

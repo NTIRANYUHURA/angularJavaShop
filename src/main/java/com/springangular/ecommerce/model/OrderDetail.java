@@ -1,9 +1,12 @@
 package com.springangular.ecommerce.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
+
 @Entity
 public class OrderDetail {
 
@@ -30,12 +33,17 @@ public class OrderDetail {
     @OneToOne
     private User user;
 
-    public OrderDetail()
-    {
+    private String transactionId;
+
+    public OrderDetail(){
 
     }
 
-    public OrderDetail(String orderFullName, String orderFullOrder, String orderContactNumber, String orderAlternateContactNumber, String orderStatus, Double orderAmount, Product product, User user) {
+    public OrderDetail(String orderFullName,
+                       String orderFullOrder,
+                       String orderContactNumber,
+                       String orderAlternateContactNumber,
+                       String orderStatus, Double orderAmount, Product product, User user, String transactionId) {
         this.orderFullName = orderFullName;
         this.orderFullOrder = orderFullOrder;
         this.orderContactNumber = orderContactNumber;
@@ -44,6 +52,7 @@ public class OrderDetail {
         this.orderAmount = orderAmount;
         this.product = product;
         this.user = user;
+        this.transactionId = transactionId;
     }
 
     public Integer getOrderId() {
@@ -116,5 +125,13 @@ public class OrderDetail {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

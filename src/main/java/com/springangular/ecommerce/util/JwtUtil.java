@@ -14,9 +14,10 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "floflo";
+    private static final String SECRET_KEY = "4f876d7b5d84cb357f65047cb6c03ab7c904b2d61f58f75783992b63fdc0b8b7";
 
     private static final int TOKEN_VALIDITY = 10*24*60*60*1000;
+
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -53,7 +54,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000L))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }

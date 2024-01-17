@@ -1,5 +1,6 @@
 package com.springangular.ecommerce.config;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,9 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -37,28 +36,38 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.cors();
-       http
+        http
 
-               .csrf()
-               .disable()
-               .authorizeHttpRequests((request)-> {
-                   try {
-                       request.requestMatchers("/authenticate", "/getAllProducts", "/deleteProductDetails/{productId}","/getProductDetailsById/{productId}", "/registerNewUser","/addToCart/{productId}", "/getCartDetails", "/addNewProduct").permitAll()
-                               .requestMatchers(HttpHeaders.ALLOW).permitAll()
-                               .anyRequest()
-                               .authenticated()
-                               .and()
-                               .sessionManagement()
-                               .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .csrf()
+                .disable()
+                .authorizeHttpRequests((request)-> {
+                    try {
+                        request.requestMatchers("/authenticate",
+                                        "/getAllProducts",
+                                        "/deleteProductDetails/{productId}",
+                                        "/getProductDetailsById/{productId}",
+                                        "/registerNewUser",
+                                        "/addToCart/{productId}",
+                                        "/getCartDetails",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+
+                                        ).permitAll()
+                                .requestMatchers(HttpHeaders.ALLOW).permitAll()
+                                .anyRequest()
+                                .authenticated()
+                                .and()
+                                .sessionManagement()
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-                   } catch (Exception e) {
-                       throw new RuntimeException(e);
-                   }
-               })
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
 
-        .authenticationProvider(authenticationProvider())
-               .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean
@@ -75,7 +84,6 @@ public class WebSecurityConfiguration {
     }
 
 
-    }
 
 
-
+}

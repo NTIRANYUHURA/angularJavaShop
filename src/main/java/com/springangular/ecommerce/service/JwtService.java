@@ -3,7 +3,7 @@ package com.springangular.ecommerce.service;
 import com.springangular.ecommerce.model.JwtRequest;
 import com.springangular.ecommerce.model.JwtResponse;
 import com.springangular.ecommerce.model.User;
-import com.springangular.ecommerce.repository.UserRipository;
+import com.springangular.ecommerce.repository.UserRepository;
 import com.springangular.ecommerce.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +26,7 @@ public class JwtService implements UserDetailsService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserRipository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;

@@ -22,7 +22,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
 
-    public static String CURRENT_USER = "";
+    public static String CURRENT_USER = "flo-flo";
 
     @Autowired
     private JwtUtil jwtUtil;

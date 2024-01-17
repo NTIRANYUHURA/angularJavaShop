@@ -1,14 +1,10 @@
 package com.springangular.ecommerce.model;
-
-
 import jakarta.persistence.*;
-
-
-
 import java.util.Set;
 
 
 @Entity
+@Table(name="ecomm-users")
 public class User {
 
     @Id

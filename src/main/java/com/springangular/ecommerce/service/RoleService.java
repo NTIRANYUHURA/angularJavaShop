@@ -1,7 +1,7 @@
 package com.springangular.ecommerce.service;
 
 import com.springangular.ecommerce.model.Role;
-import com.springangular.ecommerce.repository.RoleRipository;
+import com.springangular.ecommerce.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class RoleService {
 
     @Autowired
-    private RoleRipository roleRepository;
+    private RoleRepository roleRepository;
 
     public Role createNewRole(Role role) {
         return roleRepository.save(role);
