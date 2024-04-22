@@ -81,4 +81,14 @@ public class ProductService {
 
     }
 
+    public Product getProduct(Long id) {
+        return  productRepository.findById(Math.toIntExact(id)).get();
+
+    }
+
+    public Product saveProduct(Product p) {
+        return productRepository.save(p);
+
+    }
+
 }
